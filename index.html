@@ -6,242 +6,280 @@
     <title>Для моей любимой ❤️</title>
     <style>
         :root {
-            --bg-deep: #0f0c29;
-            --neon-pink: #ff0080;
-            --neon-purple: #9d50bb;
-            --glass: rgba(255, 255, 255, 0.1);
+            --accent: #ff0080;
+            --purple: #7000ff;
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: linear-gradient(135deg, #1a0b2e 0%, #000000 100%);
-            background-attachment: fixed;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(112, 0, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 128, 0.15) 0%, transparent 40%);
             color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
-            overflow: hidden; /* Отключаем прокрутку, пока не нажата кнопка */
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            overflow: hidden; 
         }
 
-        /* ЭКРАН ПРИВЕТСТВИЯ */
+        /* ПРИВЕТСТВИЕ */
         #welcome-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            inset: 0;
             background: #000;
-            z-index: 3000;
+            z-index: 5000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 1s ease;
+            transition: all 1s ease;
         }
 
         #welcome-overlay h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
             text-align: center;
             padding: 0 20px;
+            text-shadow: 0 0 15px var(--accent);
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ (скрыт изначально) */
-        #main-content { opacity: 0; transition: opacity 1s ease; }
-
+        /* НАВИГАЦИЯ */
         nav {
             position: fixed;
-            top: 0; width: 100%;
-            background: rgba(15, 12, 41, 0.95);
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            padding: 10px 25px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            justify-content: center;
-            padding: 18px 0;
+            gap: 15px;
             z-index: 1000;
-            border-bottom: 2px solid var(--neon-pink);
+            width: max-content;
         }
 
         nav a {
-            color: #ffffff;
+            color: #888;
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 800;
+            font-size: 11px;
+            font-weight: 600;
             text-transform: uppercase;
-            margin: 0 12px;
-            opacity: 0.7;
+            letter-spacing: 1px;
+            transition: 0.3s;
         }
 
-        nav a.active { opacity: 1; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+        nav a.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
 
+        /* КОНТЕНТ */
         section {
             display: none;
-            padding: 120px 20px 100px;
+            padding: 120px 20px 80px;
             min-height: 100vh;
-            width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
             flex-direction: column;
             align-items: center;
         }
 
-        section.active { display: flex; animation: fadeIn 0.8s ease; }
+        section.active { display: flex; animation: slideIn 0.8s ease forwards; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 30px;
             text-align: center;
-            background: linear-gradient(to right, #ff0080, #ff8c00);
+            background: linear-gradient(45deg, #fff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .btn-main {
-            background: var(--neon-pink);
-            color: white;
-            padding: 18px 45px;
-            border-radius: 50px;
+        .btn {
+            background: #fff;
+            color: #000;
+            padding: 16px 40px;
+            border-radius: 100px;
             border: none;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 0, 128, 0.6);
+            transition: 0.3s;
         }
 
-        /* ГАЛЕРЕЯ (2 в ряд как на скринах) */
-        .photo-grid {
+        .btn:active { transform: scale(0.95); }
+
+        /* ФОТОГАЛЕРЕЯ */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             width: 100%;
         }
 
-        .photo-card {
-            aspect-ratio: 3/4;
+        .card-img {
+            background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
-            border: 2px solid var(--neon-purple);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            aspect-ratio: 4/5;
         }
 
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
 
-        .letter-card {
-            background: rgba(255, 255, 255, 0.07);
-            padding: 35px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 0, 128, 0.3);
-            backdrop-filter: blur(20px);
-            font-size: 1.25rem;
-            line-height: 1.8;
+        /* ПИСЬМО */
+        .letter-wrap {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            font-size: 1.1rem;
+            color: #eee;
+            width: 100%;
         }
 
-        .reasons-grid {
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* ПРИЧИНЫ */
+        .reasons-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: 1fr;
             gap: 10px;
             width: 100%;
         }
 
-        .reason-chip {
-            background: rgba(157, 80, 187, 0.2);
+        .reason-item {
+            background: rgba(255, 255, 255, 0.03);
             padding: 15px;
             border-radius: 15px;
-            border: 1px solid var(--neon-purple);
-            font-size: 0.9rem;
-            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .reason-item span { color: var(--accent); margin-right: 10px; font-weight: 800; }
+
+        @media (max-width: 600px) {
+            nav { width: 95%; padding: 10px 15px; }
+            nav a { font-size: 9px; margin: 0 5px; }
+            h1 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
     <div id="welcome-overlay">
-        <h2>Нажми, чтобы открыть моё послание... ❤️</h2>
-        <button class="btn-main" onclick="startExperience()">Продолжить</button>
+        <h2>Скучаю по тебе... ❤️</h2>
+        <button class="btn" onclick="init()">Открыть</button>
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="player" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
-    <div id="main-content">
+    <div id="app" style="opacity: 0; transition: 1s;">
         <nav>
-            <a href="javascript:void(0)" onclick="tab('home')" id="m-home" class="active">Главная</a>
-            <a href="javascript:void(0)" onclick="tab('gallery')" id="m-gallery">Моменты</a>
-            <a href="javascript:void(0)" onclick="tab('message')" id="m-message">Письмо</a>
-            <a href="javascript:void(0)" onclick="tab('reasons')" id="m-reasons">Причины</a>
+            <a href="#" onclick="go('home')" id="t-home" class="active">Главная</a>
+            <a href="#" onclick="go('gallery')" id="t-gallery">Галерея</a>
+            <a href="#" onclick="go('letter')" id="t-letter">Письмо</a>
+            <a href="#" onclick="go('reasons')" id="t-reasons">Причины</a>
         </nav>
 
         <section id="home" class="active">
-            <h1>Привет, любимая ❤️</h1>
-            <p style="text-align: center;">Я знаю, как ты устала. Просто посмотри это и вспомни, как сильно я тебя люблю.</p>
-            <button class="btn-main" style="margin-top: 30px;" onclick="tab('gallery')">Наши моменты ➜</button>
+            <h1>Привет, родная ❤️</h1>
+            <p style="text-align: center; color: #aaa; margin-bottom: 30px;">
+                Я подготовил это для тебя, чтобы ты знала — даже когда я не рядом, я всегда думаю о тебе. Особенно сейчас, когда ты в библиотеке.
+            </p>
+            <button class="btn" onclick="go('gallery')">Смотреть моменты</button>
         </section>
 
         <section id="gallery">
             <h1>Наши моменты 🌸</h1>
-            <div class="photo-grid">
-                <div class="photo-card"><img src="1.jpg"></div>
-                <div class="photo-card"><img src="2.jpg"></div>
-                <div class="photo-card"><img src="3.jpg"></div>
-                <div class="photo-card"><img src="4.jpg"></div>
-                <div class="photo-card"><img src="5.jpg"></div>
-                <div class="photo-card"><img src="6.jpg"></div>
+            <div class="grid">
+                <div class="card-img"><img src="1.jpg"></div>
+                <div class="card-img"><img src="2.jpg"></div>
+                <div class="card-img"><img src="3.jpg"></div>
+                <div class="card-img"><img src="4.jpg"></div>
+                <div class="card-img"><img src="5.jpg"></div>
+                <div class="card-img"><img src="6.jpg"></div>
             </div>
-            <button class="btn-main" style="margin-top: 30px;" onclick="tab('message')">Читать письмо ✉️</button>
+            <button class="btn" style="margin-top: 30px;" onclick="go('letter')">Читать письмо</button>
         </section>
 
-        <section id="message">
-            <h1>Моё сердце тебе</h1>
-            <div class="letter-card">
-                <p>Я хочу, чтобы ты знала: ты — самое яркое и самое лучшее, что случилось со мной за всю мою жизнь.</p>
-                <br>
-                <p>Никогда ни к кому я не испытывал столько любви, сколько испытываю к тебе. Столько эмоций и счастья!</p>
-                <br>
-                <p>Все, что было до тебя и без тебя — блеклое и пустое. Ты наполняешь каждый мой день смыслом.</p>
-                <br>
-                <p style="text-align: right; color: var(--neon-pink); font-weight: bold;">Твой навсегда ❤️</p>
+        <section id="letter">
+            <h1>Моё сердце</h1>
+            <div class="letter-wrap">
+                <p>Ты принесла в мою жизнь то чувство, которое невозможно заменить ничем другим, это не просто симпатия, непросто привязанность — это что-то намного глубже.</p>
+                <p>Когда ты рядом, внутри появляется такое тепло, которое словами не описать. И в этом тепле хочется остаться, хочется жить, хочется дышать.</p>
+                <p>Я люблю тебя не потому, что так красиво звучит. Я люблю, потому что ты стала частью меня. Ты научила меня иначе смотреть на простые вещи, иначе относиться даже к себе. И я благодарен тебе за это.</p>
+                <p>Мне не нужно придумывать красивые фразы, чтобы доказать свои чувства — они сами говорят за меня. Я люблю тебя так, что это чувство стало моим самым тихим и самым сильным местом внутри.</p>
+                <div class="signature">от Ерсултана люблю тебя сильно ❤️</div>
             </div>
-            <button class="btn-main" style="margin-top: 30px;" onclick="tab('reasons')">100 Причин ➜</button>
+            <button class="btn" style="margin-top: 30px;" onclick="go('reasons')">100 причин любви</button>
         </section>
 
         <section id="reasons">
             <h1>100 причин моей любви</h1>
-            <div class="reasons-grid" id="reasonsGrid"></div>
+            <div class="reasons-list" id="r-list"></div>
         </section>
     </div>
 
     <script>
-        function startExperience() {
-            const audio = document.getElementById('bg-music');
-            const overlay = document.getElementById('welcome-overlay');
-            const content = document.getElementById('main-content');
-            
-            // Запуск музыки
-            audio.play().catch(e => console.log("Ошибка воспроизведения:", e));
-            
-            // Плавное скрытие оверлея
-            overlay.style.opacity = '0';
+        function init() {
+            document.getElementById('player').play().catch(e => console.log("Music play blocked"));
+            document.getElementById('welcome-overlay').style.opacity = '0';
             setTimeout(() => {
-                overlay.style.display = 'none';
-                content.style.opacity = '1';
-                document.body.style.overflow = 'auto'; // Включаем прокрутку
+                document.getElementById('welcome-overlay').style.display = 'none';
+                document.getElementById('app').style.opacity = '1';
+                document.body.style.overflow = 'auto';
             }, 1000);
         }
 
-        function tab(id) {
+        function go(id) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById('m-' + id).classList.add('active');
+            document.getElementById('t-' + id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // Наполнение причин
-        const reasonsArr = ["Твоя улыбка", "Твои глаза", "Твой смех", "Твоя забота", "Твой голос", "Твоя поддержка", "Твоя искренность", "Твоя доброта", "Твой ум", "Твоё терпение", "Как ты пьешь чай", "Твои сообщения", "Твоя целеустремленность", "Твой взгляд", "Твои поцелуи", "Твой аромат", "Твоя уникальность", "Твоя нежность", "Твоя яркость", "Твоя сила воли", "Твоё тепло", "Твоя преданность"];
+        const reasons = [
+            "Твоя улыбка", "Твои глаза", "Твой смех", "Твоя бесконечная забота", "Твой голос",
+            "Твоя поддержка в трудные минуты", "Твоя искренность", "Твоя безграничная доброта", "Твой острый ум", "Твоё ангельское терпение",
+            "Твой уникальный взгляд на мир", "Твоя нежность", "Твоя сумасшедшая энергия", "Твое душевное тепло", "Твоя вера в меня",
+            "То, как ты пьешь чай", "Твои сообщения по утрам", "Твоя целеустремленность в учебе", "Твой неповторимый стиль", "Как ты поправляешь волосы",
+            "Твоя честность", "Твои сладкие поцелуи", "Твой особенный аромат", "Как ты радуешься мелочам", "Твоя уникальность",
+            "Твои мудрые советы", "Твоя преданность", "Как ты произносишь моё имя", "Твое умение слушать", "Твоя природная грация",
+            "Твои самые крепкие объятия", "Твоя щедрость души", "Твой вечный оптимизм", "Твоя мудрость не по годам", "Твоя железная сила воли",
+            "Твое доверие", "Твои интересные рассказы", "Твоя естественная красота", "Твоя дисциплина", "Твоя чуткость к моим чувствам",
+            "Твой вкус в музыке", "Твоя открытость всему новому", "Твоя яркость", "Твоя мягкость", "То, что ты всегда рядом",
+            "Твое чувство юмора", "Твое спокойствие", "Твоя страсть к жизни", "Твое внимание к деталям", "Твоя скромность",
+            "Твоя смелость", "Твоя любовь к знаниям", "Как ты сидишь в библиотеке", "Твоя серьезность", "Твои сонные глаза",
+            "Твое умение вдохновлять", "Твоя организованность", "Твое доброе сердце", "Твоя харизма", "Твоя аккуратность",
+            "Твое умение удивлять", "Твое понимание без слов", "Твоя верность принципам", "Твое умение прощать", "Твоя детская непосредственность",
+            "Твоя женственность", "Твой уют", "Твои холодные ручки, которые я грею", "Твоя забота о своем будущем", "Твои мечты",
+            "Как ты заставляешь меня меняться к лучшему", "Твой характер", "Твоя глубина", "Твоя загадочность", "Твоя простота",
+            "Твое умение находить выход из любой ситуации", "Твоя любовь к порядку", "Как ты выглядишь, когда читаешь", "Твоя сосредоточенность", "Твоя искренняя радость за меня",
+            "Твоя поддержка в моих начинаниях", "Твоя независимость", "Твоя внутренняя сила", "Твое умение сопереживать", "Твоя прелестная улыбка после сна",
+            "Твои глубокие мысли", "Твое отношение к семье", "Твое умение создать атмосферу", "Твоя стойкость", "Твой милый голос в трубке",
+            "Твое умение признавать ошибки", "Твоя оригинальность", "Твоя ответственность", "Твое умение ценить моменты", "Твой внутренний свет",
+            "Твое присутствие в моей жизни", "Твои планы на наше будущее", "То, как ты меня любишь", "То, что ты — моя судьба", "Просто за то, что ты есть"
+        ];
 
-        const grid = document.getElementById('reasonsGrid');
-        for (let i = 0; i < 100; i++) {
-            const div = document.createElement('div');
-            div.className = 'reason-chip';
-            div.innerText = `${i + 1}. ${reasonsArr[i] || "За то, что ты рядом"}`;
-            grid.appendChild(div);
-        }
+        const list = document.getElementById('r-list');
+        reasons.forEach((text, i) => {
+            const item = document.createElement('div');
+            item.className = 'reason-item';
+            item.innerHTML = `<span>${i + 1}</span> ${text}`;
+            list.appendChild(item);
+        });
     </script>
 </body>
 </html>
