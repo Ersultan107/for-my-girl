@@ -2,251 +2,244 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для моей самой любимой ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Для моей любимой ❤️</title>
     <style>
         :root {
-            --main-bg: #0f0c29;
-            --grad: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            --pink: #ff0080;
-            --light-pink: #ff85c0;
+            --bg-deep: #0f0c29;
+            --neon-pink: #ff0080;
+            --neon-purple: #9d50bb;
             --glass: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background: var(--grad);
+            background: linear-gradient(135deg, #1a0b2e 0%, #000000 100%);
             background-attachment: fixed;
-            color: white;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
-            /* Увеличиваем базовый шрифт для читаемости */
-            font-size: 18px;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; /* Отключаем прокрутку, пока не нажата кнопка */
         }
 
-        /* Навигация как пульт управления */
+        /* ЭКРАН ПРИВЕТСТВИЯ */
+        #welcome-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        #welcome-overlay h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* ОСНОВНОЙ КОНТЕНТ (скрыт изначально) */
+        #main-content { opacity: 0; transition: opacity 1s ease; }
+
         nav {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 40px;
-            backdrop-filter: blur(15px);
-            z-index: 1000;
-            border: 1px solid var(--light-pink);
+            top: 0; width: 100%;
+            background: rgba(15, 12, 41, 0.95);
             display: flex;
-            gap: 10px;
-            width: 90%;
-            max-width: 500px;
             justify-content: center;
+            padding: 18px 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--neon-pink);
         }
 
         nav a {
-            color: white;
+            color: #ffffff;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 13px;
+            font-weight: 800;
             text-transform: uppercase;
-            padding: 8px 12px;
-            border-radius: 20px;
-            transition: 0.3s;
+            margin: 0 12px;
+            opacity: 0.7;
         }
 
-        nav a:hover, nav a.active {
-            background: var(--pink);
-            box-shadow: 0 0 15px var(--pink);
-        }
+        nav a.active { opacity: 1; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
 
-        /* Секции теперь скрыты по умолчанию, кроме главной */
         section {
             display: none;
-            padding: 40px 20px 120px 20px;
+            padding: 120px 20px 100px;
             min-height: 100vh;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.8s ease-out;
         }
 
-        section.active { display: flex; }
+        section.active { display: flex; animation: fadeIn 0.8s ease; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Главный экран */
-        .hero { text-align: center; justify-content: center; }
-        
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
             background: linear-gradient(to right, #ff0080, #ff8c00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(255,0,128,0.3));
         }
 
-        .hero p { font-size: 1.4rem; max-width: 600px; line-height: 1.5; }
-
-        /* Кнопки действий */
-        .btn-action {
-            background: var(--pink);
+        .btn-main {
+            background: var(--neon-pink);
             color: white;
-            border: none;
-            padding: 15px 30px;
+            padding: 18px 45px;
             border-radius: 50px;
-            font-size: 1.1rem;
-            margin-top: 30px;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 0, 128, 0.4);
-            transition: 0.3s;
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.6);
         }
 
-        .btn-action:hover { transform: scale(1.05); background: #ff3399; }
-
-        /* Галерея */
-        .gallery-grid {
+        /* ГАЛЕРЕЯ (2 в ряд как на скринах) */
+        .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
             width: 100%;
-            max-width: 1100px;
         }
 
-        .gallery-item {
+        .photo-card {
+            aspect-ratio: 3/4;
             border-radius: 20px;
             overflow: hidden;
-            border: 2px solid var(--light-pink);
-            height: 350px;
+            border: 2px solid var(--neon-purple);
         }
 
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Письмо */
-        .card {
-            background: var(--glass);
-            padding: 30px;
+        .letter-card {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 35px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            max-width: 700px;
-            font-size: 1.2rem;
+            border: 1px solid rgba(255, 0, 128, 0.3);
+            backdrop-filter: blur(20px);
+            font-size: 1.25rem;
             line-height: 1.8;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        /* Причины */
         .reasons-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
             width: 100%;
         }
 
-        .reason-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
+        .reason-chip {
+            background: rgba(157, 80, 187, 0.2);
+            padding: 15px;
             border-radius: 15px;
-            border-left: 4px solid var(--pink);
-            font-size: 1rem;
-        }
-
-        /* Адаптация под мобилки */
-        @media (max-width: 600px) {
-            h1 { font-size: 2.2rem; }
-            .hero p { font-size: 1.1rem; }
-            .card { font-size: 1.1rem; padding: 20px; }
-            nav { gap: 5px; padding: 8px 10px; }
-            nav a { font-size: 0.65rem; padding: 6px 8px; }
+            border: 1px solid var(--neon-purple);
+            font-size: 0.9rem;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#" onclick="showSection('home')" id="nav-home" class="active">Главная</a>
-        <a href="#" onclick="showSection('memories')" id="nav-memories">Фото</a>
-        <a href="#" onclick="showSection('message')" id="nav-message">Письмо</a>
-        <a href="#" onclick="showSection('reasons')" id="nav-reasons">100 Причин</a>
-    </nav>
+    <div id="welcome-overlay">
+        <h2>Нажми, чтобы открыть моё послание... ❤️</h2>
+        <button class="btn-main" onclick="startExperience()">Продолжить</button>
+    </div>
 
-    <section id="home" class="active hero">
-        <h1>Привет, любимая ❤️</h1>
-        <p>Ты там сейчас в библиотеке, совсем устала от учебы... Я решил сделать этот сайт, чтобы ты могла отвлечься и улыбнуться.</p>
-        <button class="btn-action" onclick="showSection('memories')">Начать наше путешествие ➜</button>
-    </section>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
-    <section id="memories">
-        <h1>Наши моменты 🌸</h1>
-        <div class="gallery-grid">
-            <div class="gallery-item"><img src="1.jpg" alt="1"></div>
-            <div class="gallery-item"><img src="2.jpg" alt="2"></div>
-            <div class="gallery-item"><img src="3.jpg" alt="3"></div>
-            <div class="gallery-item"><img src="4.jpg" alt="4"></div>
-            <div class="gallery-item"><img src="5.jpg" alt="5"></div>
-            <div class="gallery-item"><img src="6.jpg" alt="6"></div>
-        </div>
-        <button class="btn-action" onclick="showSection('message')">Читать письмо ✉️</button>
-    </section>
+    <div id="main-content">
+        <nav>
+            <a href="javascript:void(0)" onclick="tab('home')" id="m-home" class="active">Главная</a>
+            <a href="javascript:void(0)" onclick="tab('gallery')" id="m-gallery">Моменты</a>
+            <a href="javascript:void(0)" onclick="tab('message')" id="m-message">Письмо</a>
+            <a href="javascript:void(0)" onclick="tab('reasons')" id="m-reasons">Причины</a>
+        </nav>
 
-    <section id="message">
-        <h1>Мое послание тебе</h1>
-        <div class="card">
-            <p>Я сижу тут, болею, и только мысли о тебе помогают не киснуть. Я вижу, как ты стараешься, как ты бегаешь между парами и библиотекой. Ты — самая крутая студентка, которую я знаю!</p>
-            <br>
-            <p>Не перетруждайся там сильно, книги подождут, а твое здоровье и настроение — нет. Горжусь тобой бесконечно.</p>
-            <br>
-            <p style="text-align: right; color: var(--light-pink);"><b>Всегда твой, выздоравливающий я ❤️</b></p>
-        </div>
-        <button class="btn-action" onclick="showSection('reasons')">Узнать 100 причин ➜</button>
-    </section>
+        <section id="home" class="active">
+            <h1>Привет, любимая ❤️</h1>
+            <p style="text-align: center;">Я знаю, как ты устала. Просто посмотри это и вспомни, как сильно я тебя люблю.</p>
+            <button class="btn-main" style="margin-top: 30px;" onclick="tab('gallery')">Наши моменты ➜</button>
+        </section>
 
-    <section id="reasons">
-        <h1>100 причин моей любви</h1>
-        <div class="reasons-grid" id="reasonsGrid"></div>
-    </section>
+        <section id="gallery">
+            <h1>Наши моменты 🌸</h1>
+            <div class="photo-grid">
+                <div class="photo-card"><img src="1.jpg"></div>
+                <div class="photo-card"><img src="2.jpg"></div>
+                <div class="photo-card"><img src="3.jpg"></div>
+                <div class="photo-card"><img src="4.jpg"></div>
+                <div class="photo-card"><img src="5.jpg"></div>
+                <div class="photo-card"><img src="6.jpg"></div>
+            </div>
+            <button class="btn-main" style="margin-top: 30px;" onclick="tab('message')">Читать письмо ✉️</button>
+        </section>
+
+        <section id="message">
+            <h1>Моё сердце тебе</h1>
+            <div class="letter-card">
+                <p>Я хочу, чтобы ты знала: ты — самое яркое и самое лучшее, что случилось со мной за всю мою жизнь.</p>
+                <br>
+                <p>Никогда ни к кому я не испытывал столько любви, сколько испытываю к тебе. Столько эмоций и счастья!</p>
+                <br>
+                <p>Все, что было до тебя и без тебя — блеклое и пустое. Ты наполняешь каждый мой день смыслом.</p>
+                <br>
+                <p style="text-align: right; color: var(--neon-pink); font-weight: bold;">Твой навсегда ❤️</p>
+            </div>
+            <button class="btn-main" style="margin-top: 30px;" onclick="tab('reasons')">100 Причин ➜</button>
+        </section>
+
+        <section id="reasons">
+            <h1>100 причин моей любви</h1>
+            <div class="reasons-grid" id="reasonsGrid"></div>
+        </section>
+    </div>
 
     <script>
-        // Функция переключения разделов
-        function showSection(id) {
-            // Скрываем все секции
-            const sections = document.querySelectorAll('section');
-            sections.forEach(s => s.classList.remove('active'));
+        function startExperience() {
+            const audio = document.getElementById('bg-music');
+            const overlay = document.getElementById('welcome-overlay');
+            const content = document.getElementById('main-content');
             
-            // Убираем активный класс у ссылок
-            const links = document.querySelectorAll('nav a');
-            links.forEach(l => l.classList.remove('active'));
+            // Запуск музыки
+            audio.play().catch(e => console.log("Ошибка воспроизведения:", e));
+            
+            // Плавное скрытие оверлея
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                content.style.opacity = '1';
+                document.body.style.overflow = 'auto'; // Включаем прокрутку
+            }, 1000);
+        }
 
-            // Показываем нужную
+        function tab(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById('nav-' + id).classList.add('active');
-            
-            // Скроллим в начало страницы
+            document.getElementById('m-' + id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // Заполнение причин (как в прошлом коде, но в новом дизайне)
-        const reasonsList = [
-            "Твоя улыбка", "Твои глаза", "Твой смех", "Твоя забота", "Твой голос",
-            "Твоя поддержка", "Твоя искренность", "Твоя доброта", "Твой ум", "Твоё терпение",
-            "Как ты пьешь чай", "Твои сонные сообщения", "Твоя целеустремленность", "Твой стиль",
-            "То, как ты помогаешь людям в библиотеке", "Твои мечты", "Твоя вера в меня", "Как ты поправляешь волосы",
-            "Твоя честность", "Твои поцелуи", "Твой аромат", "Как ты радуешься мелочам", "Твоя уникальность",
-            "Твои советы", "Твоя преданность", "Твой взгляд", "Твоя энергия", "Как ты произносишь моё имя",
-            "Твоё умение слушать", "Твоя грация", "Твои объятия", "Твоя щедрость", "Твой оптимизм",
-            "Твоя мудрость", "Твоя сила воли", "Твои привычки", "Твоя серьезность в учебе",
-            "Как ты готовишь", "Твоё доверие", "Твоё тепло", "Твои рассказы", "Твоя естественность",
-            "Твоя дисциплина", "Твоя чуткость", "Твоя мягкость", "Твой вкус в музыке", "Твоя открытость",
-            "Как ты смеешься над моими шутками", "Твоя яркость", "Твоя нежность", "То, что ты — это ты"
-        ];
+        // Наполнение причин
+        const reasonsArr = ["Твоя улыбка", "Твои глаза", "Твой смех", "Твоя забота", "Твой голос", "Твоя поддержка", "Твоя искренность", "Твоя доброта", "Твой ум", "Твоё терпение", "Как ты пьешь чай", "Твои сообщения", "Твоя целеустремленность", "Твой взгляд", "Твои поцелуи", "Твой аромат", "Твоя уникальность", "Твоя нежность", "Твоя яркость", "Твоя сила воли", "Твоё тепло", "Твоя преданность"];
 
         const grid = document.getElementById('reasonsGrid');
         for (let i = 0; i < 100; i++) {
             const div = document.createElement('div');
-            div.className = 'reason-box';
-            div.innerText = `Причина ${i + 1}: ${reasonsList[i] || "То, что ты делаешь меня счастливым"}`;
+            div.className = 'reason-chip';
+            div.innerText = `${i + 1}. ${reasonsArr[i] || "За то, что ты рядом"}`;
             grid.appendChild(div);
         }
     </script>
