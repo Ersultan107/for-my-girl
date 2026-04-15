@@ -1,285 +1,618 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Для моей любимой ❤️</title>
-    <style>
-        :root {
-            --accent: #ff0080;
-            --purple: #7000ff;
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.05);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Для моей жаным ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #ff3d6e;
+  --blush: #ffb3c6;
+  --cream: #fff5f7;
+  --deep: #0a0005;
+  --wine: #2d0015;
+  --gold: #f5c842;
+  --glass: rgba(255,255,255,0.06);
+  --border: rgba(255,180,200,0.15);
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(112, 0, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 128, 0.15) 0%, transparent 40%);
-            color: #ffffff;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
-            overflow: hidden; 
-        }
+html { scroll-behavior: smooth; }
 
-        /* ПРИВЕТСТВИЕ */
-        #welcome-overlay {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 5000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 1s ease;
-        }
+body {
+  background-color: var(--deep);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,61,110,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(180,0,80,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(100,0,50,0.1) 0%, transparent 50%);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+  min-height: 100vh;
+}
 
-        #welcome-overlay h2 {
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            text-align: center;
-            padding: 0 20px;
-            text-shadow: 0 0 15px var(--accent);
-        }
+/* ── PARTICLES ── */
+#particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.p {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--blush);
+  opacity: 0;
+  animation: float linear infinite;
+}
+@keyframes float {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
 
-        /* НАВИГАЦИЯ */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            padding: 10px 25px;
-            border-radius: 100px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
-            width: max-content;
-        }
+/* ── WELCOME ── */
+#welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+#welcome.hide {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+.w-heart {
+  font-size: 4rem;
+  animation: pulse 1.6s ease-in-out infinite;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px var(--rose));
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+.w-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: #ddd;
+  margin-bottom: 50px;
+  text-align: center;
+  padding: 0 30px;
+}
+.open-btn {
+  position: relative;
+  background: transparent;
+  border: 1.5px solid var(--rose);
+  color: #fff;
+  padding: 16px 50px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  transition: 0.4s;
+}
+.open-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--rose);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  z-index: -1;
+}
+.open-btn:hover::before, .open-btn:active::before { transform: scaleX(1); }
+.open-btn:active { transform: scale(0.96); }
 
-        nav a {
-            color: #888;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
+/* ── APP ── */
+#app {
+  opacity: 0;
+  transition: opacity 1s ease;
+  position: relative;
+  z-index: 1;
+}
+#app.show { opacity: 1; }
 
-        nav a.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+/* ── NAV ── */
+nav {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(10,0,5,0.7);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 4px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,61,110,0.1);
+}
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+.nav-btn.active {
+  background: var(--rose);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255,61,110,0.4);
+}
 
-        /* КОНТЕНТ */
-        section {
-            display: none;
-            padding: 120px 20px 80px;
-            min-height: 100vh;
-            max-width: 800px;
-            margin: 0 auto;
-            flex-direction: column;
-            align-items: center;
-        }
+/* ── SECTIONS ── */
+section {
+  display: none;
+  min-height: 100vh;
+  padding: 60px 24px 120px;
+  max-width: 640px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+section.active {
+  display: flex;
+  animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-        section.active { display: flex; animation: slideIn 0.8s ease forwards; }
+/* ── TYPOGRAPHY ── */
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 8vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+h1 em {
+  font-style: italic;
+  color: var(--blush);
+}
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+/* ── HOME ── */
+.home-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  max-width: 320px;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  font-weight: 300;
+}
+.home-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--rose);
+  color: #fff;
+  padding: 18px 40px;
+  border-radius: 100px;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 10px 40px rgba(255,61,110,0.35);
+  transition: 0.3s;
+}
+.home-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 50px rgba(255,61,110,0.45); }
+.home-cta:active { transform: scale(0.97); }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-align: center;
-            background: linear-gradient(45deg, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* ── DECORATIVE LINE ── */
+.deco-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--rose), transparent);
+  margin: 30px auto;
+}
 
-        .btn {
-            background: #fff;
-            color: #000;
-            padding: 16px 40px;
-            border-radius: 100px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* ── GALLERY ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 12px;
+  width: 100%;
+}
+.gallery-grid .photo {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  position: relative;
+}
+.gallery-grid .photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+}
+.gallery-grid .photo:nth-child(1) { grid-column: 1 / 2; aspect-ratio: 4/5; }
+.gallery-grid .photo:nth-child(2) { grid-column: 2 / 3; aspect-ratio: 4/5; }
+.gallery-grid .photo:nth-child(3) { grid-column: 1 / 3; aspect-ratio: 16/9; }
+.gallery-grid .photo:nth-child(4) { grid-column: 1 / 2; aspect-ratio: 1/1; }
+.gallery-grid .photo:nth-child(5) { grid-column: 2 / 3; aspect-ratio: 1/1; }
+.gallery-grid .photo:nth-child(6) { grid-column: 1 / 3; aspect-ratio: 16/7; }
+.gallery-grid .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.gallery-grid .photo:active img { transform: scale(1.05); }
 
-        .btn:active { transform: scale(0.95); }
+/* ── LETTER ── */
+.letter-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: clamp(24px, 6vw, 40px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.letter-card::before {
+  content: '❝';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8rem;
+  color: var(--rose);
+  opacity: 0.08;
+  line-height: 1;
+  pointer-events: none;
+}
+.letter-p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.05rem, 3.5vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 20px;
+}
+.letter-p:last-of-type { margin-bottom: 0; }
+.letter-sig {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  text-align: right;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--blush);
+}
 
-        /* ФОТОГАЛЕРЕЯ */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-        }
+/* ── REASONS ── */
+.reasons-scroll {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.reason {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: 0.3s;
+  animation: slideReason 0.4s ease backwards;
+}
+.reason:active {
+  background: rgba(255,61,110,0.1);
+  border-color: rgba(255,61,110,0.3);
+}
+@keyframes slideReason {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.r-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--rose);
+  min-width: 36px;
+  opacity: 0.7;
+}
+.r-text {
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+}
 
-        .card-img {
-            background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            aspect-ratio: 4/5;
-        }
+/* ── MUSIC INDICATOR ── */
+#music-bar {
+  position: fixed;
+  top: 24px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10,0,5,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#music-bar:active { transform: scale(0.95); }
+.music-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.music-waves {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+.music-waves span {
+  display: block;
+  width: 2px;
+  background: var(--rose);
+  border-radius: 2px;
+  animation: wave 0.8s ease-in-out infinite;
+}
+.music-waves span:nth-child(1) { height: 4px;  animation-delay: 0s; }
+.music-waves span:nth-child(2) { height: 10px; animation-delay: 0.1s; }
+.music-waves span:nth-child(3) { height: 6px;  animation-delay: 0.2s; }
+.music-waves span:nth-child(4) { height: 12px; animation-delay: 0.15s; }
+.music-waves span:nth-child(5) { height: 5px;  animation-delay: 0.05s; }
+@keyframes wave {
+  0%,100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.3); }
+}
+.music-waves.paused span { animation-play-state: paused; opacity: 0.3; }
 
-        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+/* ── SECONDARY BTN ── */
+.sec-btn {
+  margin-top: 30px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: rgba(255,255,255,0.7);
+  padding: 14px 36px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.sec-btn:hover, .sec-btn:active {
+  border-color: var(--rose);
+  color: var(--rose);
+  background: rgba(255,61,110,0.06);
+}
 
-        /* ПИСЬМО */
-        .letter-wrap {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            font-size: 1.1rem;
-            color: #eee;
-            width: 100%;
-        }
-
-        .signature {
-            margin-top: 30px;
-            text-align: right;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        /* ПРИЧИНЫ */
-        .reasons-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .reason-item {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.95rem;
-        }
-
-        .reason-item span { color: var(--accent); margin-right: 10px; font-weight: 800; }
-
-        @media (max-width: 600px) {
-            nav { width: 95%; padding: 10px 15px; }
-            nav a { font-size: 9px; margin: 0 5px; }
-            h1 { font-size: 1.6rem; }
-        }
-    </style>
+/* ── MOBILE FINE-TUNING ── */
+@media (max-width: 380px) {
+  nav { bottom: 20px; padding: 6px 8px; gap: 2px; }
+  .nav-btn { padding: 9px 12px; font-size: 0.6rem; }
+  .gallery-grid .photo:nth-child(3) { aspect-ratio: 4/3; }
+}
+@media (min-width: 600px) {
+  section { padding: 80px 40px 140px; }
+  .gallery-grid { gap: 16px; }
+  .gallery-grid .photo { border-radius: 22px; }
+}
+</style>
 </head>
 <body>
 
-    <div id="welcome-overlay">
-        <h2>Скучаю по тебе... ❤️</h2>
-        <button class="btn" onclick="init()">Открыть</button>
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- WELCOME -->
+<div id="welcome">
+  <div class="w-heart">❤️</div>
+  <p class="w-text">Скучаю по тебе каждую секунду...</p>
+  <button class="open-btn" onclick="init()">Открыть</button>
+</div>
+
+<!-- MUSIC -->
+<audio id="player" loop><source src="music.mp3" type="audio/mpeg"></audio>
+<div id="music-bar" onclick="toggleMusic()">
+  <div class="music-waves" id="waves">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <span class="music-label">Музыка</span>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- HOME -->
+  <section id="s-home" class="active">
+    <span class="section-label">Только для тебя</span>
+    <h1>Привет,<br><em>жаным ❤️</em></h1>
+    <p class="home-subtitle">Я подготовил это для тебя, чтобы ты знала — даже когда меня нет рядом, я всегда думаю о тебе.</p>
+    <button class="home-cta" onclick="go('gallery')">
+      <span>Наши моменты</span>
+      <span>→</span>
+    </button>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="s-gallery">
+    <span class="section-label">Воспоминания</span>
+    <h1>Наши <em>моменты</em></h1>
+    <div class="gallery-grid">
+      <div class="photo"><img src="1.jpg" alt=""></div>
+      <div class="photo"><img src="2.jpg" alt=""></div>
+      <div class="photo"><img src="3.jpg" alt=""></div>
+      <div class="photo"><img src="4.jpg" alt=""></div>
+      <div class="photo"><img src="5.jpg" alt=""></div>
+      <div class="photo"><img src="6.jpg" alt=""></div>
     </div>
+    <button class="sec-btn" onclick="go('letter')">Читать письмо →</button>
+  </section>
 
-    <audio id="player" loop><source src="music.mp3" type="audio/mpeg"></audio>
-
-    <div id="app" style="opacity: 0; transition: 1s;">
-        <nav>
-            <a href="#" onclick="go('home')" id="t-home" class="active">Главная</a>
-            <a href="#" onclick="go('gallery')" id="t-gallery">Галерея</a>
-            <a href="#" onclick="go('letter')" id="t-letter">Письмо</a>
-            <a href="#" onclick="go('reasons')" id="t-reasons">Причины</a>
-        </nav>
-
-        <section id="home" class="active">
-            <h1>Привет, жаным ❤️</h1>
-            <p style="text-align: center; color: #aaa; margin-bottom: 30px;">
-                Я подготовил это для тебя, чтобы ты знала — даже когда я не рядом, я всегда думаю о тебе. Особенно сейчас, когда ты в колледже.
-            </p>
-            <button class="btn" onclick="go('gallery')">Смотреть моменты</button>
-        </section>
-
-        <section id="gallery">
-            <h1>Наши моменты 🌸</h1>
-            <div class="grid">
-                <div class="card-img"><img src="1.jpg"></div>
-                <div class="card-img"><img src="2.jpg"></div>
-                <div class="card-img"><img src="3.jpg"></div>
-                <div class="card-img"><img src="4.jpg"></div>
-                <div class="card-img"><img src="5.jpg"></div>
-                <div class="card-img"><img src="6.jpg"></div>
-            </div>
-            <button class="btn" style="margin-top: 30px;" onclick="go('letter')">Читать письмо</button>
-        </section>
-
-        <section id="letter">
-            <h1>Моё сердце</h1>
-            <div class="letter-wrap">
-                <p>Ты принесла в мою жизнь то чувство, которое невозможно заменить ничем другим, это не просто симпатия, непросто привязанность — это что-то намного глубже.</p>
-                <p>Когда ты рядом, внутри появляется такое тепло, которое словами не описать. И в этом тепле хочется остаться, хочется жить, хочется дышать.</p>
-                <p>Я люблю тебя не потому, что так красиво звучит. Я люблю, потому что ты стала частью меня. Ты научила меня иначе смотреть на простые вещи, иначе относиться даже к себе. И я благодарен тебе за это.</p>
-                <p>Мне не нужно придумывать красивые фразы, чтобы доказать свои чувства — они сами говорят за меня. Я люблю тебя так, что это чувство стало моим самым тихим и самым сильным местом внутри.</p>
-                <div class="signature">люблю тебя сильно жаным ❤️</div>
-            </div>
-            <button class="btn" style="margin-top: 30px;" onclick="go('reasons')">100 причин любви</button>
-        </section>
-
-        <section id="reasons">
-            <h1>100 причин моей любви</h1>
-            <div class="reasons-list" id="r-list"></div>
-        </section>
+  <!-- LETTER -->
+  <section id="s-letter">
+    <span class="section-label">От сердца к сердцу</span>
+    <h1>Моё <em>сердце</em></h1>
+    <div class="letter-card">
+      <p class="letter-p">Ты принесла в мою жизнь то чувство, которое невозможно заменить ничем другим — это не просто симпатия, не просто привязанность, это что-то намного глубже.</p>
+      <p class="letter-p">Когда ты рядом, внутри появляется такое тепло, которое словами не описать. И в этом тепле хочется остаться, хочется жить, хочется дышать.</p>
+      <p class="letter-p">Я люблю тебя не потому, что так красиво звучит. Я люблю, потому что ты стала частью меня. Ты научила меня иначе смотреть на простые вещи, иначе относиться даже к себе.</p>
+      <p class="letter-p">Мне не нужно придумывать красивые фразы — мои чувства сами говорят за меня. Я люблю тебя так, что это стало моим самым тихим и самым сильным местом внутри.</p>
+      <div class="letter-sig">люблю тебя сильно, жаным ❤️</div>
     </div>
+    <button class="sec-btn" onclick="go('reasons')">100 причин →</button>
+  </section>
 
-    <script>
-        function init() {
-            document.getElementById('player').play().catch(e => console.log("Music play blocked"));
-            document.getElementById('welcome-overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('welcome-overlay').style.display = 'none';
-                document.getElementById('app').style.opacity = '1';
-                document.body.style.overflow = 'auto';
-            }, 1000);
-        }
+  <!-- REASONS -->
+  <section id="s-reasons">
+    <span class="section-label">Бесконечно</span>
+    <h1>100 причин<br><em>моей любви</em></h1>
+    <div class="reasons-scroll" id="r-list"></div>
+  </section>
 
-        function go(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.getElementById('t-' + id).classList.add('active');
-            window.scrollTo(0,0);
-        }
+  <!-- BOTTOM NAV -->
+  <nav>
+    <button class="nav-btn active" onclick="go('home')" id="n-home">Главная</button>
+    <button class="nav-btn" onclick="go('gallery')" id="n-gallery">Галерея</button>
+    <button class="nav-btn" onclick="go('letter')" id="n-letter">Письмо</button>
+    <button class="nav-btn" onclick="go('reasons')" id="n-reasons">Причины</button>
+  </nav>
+</div>
 
-        const reasons = [
-            "Твоя улыбка", "Твои глаза", "Твой смех", "Твоя бесконечная забота", "Твой голос",
-            "Твоя поддержка в трудные минуты", "Твоя искренность", "Твоя безграничная доброта", "Твой острый ум", "Твоё ангельское терпение",
-            "Твой уникальный взгляд на мир", "Твоя нежность", "Твоя сумасшедшая энергия", "Твое душевное тепло", "Твоя вера в меня",
-            "То, как ты пьешь чай", "Твои сообщения по утрам", "Твоя целеустремленность в учебе", "Твой неповторимый стиль", "Как ты поправляешь волосы",
-            "Твоя честность", "Твои сладкие поцелуи", "Твой особенный аромат", "Как ты радуешься мелочам", "Твоя уникальность",
-            "Твои мудрые советы", "Твоя преданность", "Как ты произносишь моё имя", "Твое умение слушать", "Твоя природная грация",
-            "Твои самые крепкие объятия", "Твоя щедрость души", "Твой вечный оптимизм", "Твоя мудрость не по годам", "Твоя железная сила воли",
-            "Твое доверие", "Твои интересные рассказы", "Твоя естественная красота", "Твоя дисциплина", "Твоя чуткость к моим чувствам",
-            "Твой вкус в музыке", "Твоя открытость всему новому", "Твоя яркость", "Твоя мягкость", "То, что ты всегда рядом",
-            "Твое чувство юмора", "Твое спокойствие", "Твоя страсть к жизни", "Твое внимание к деталям", "Твоя скромность",
-            "Твоя смелость", "Твоя любовь к знаниям", "Как ты сидишь в библиотеке", "Твоя серьезность", "Твои сонные глаза",
-            "Твое умение вдохновлять", "Твоя организованность", "Твое доброе сердце", "Твоя харизма", "Твоя аккуратность",
-            "Твое умение удивлять", "Твое понимание без слов", "Твоя верность принципам", "Твое умение прощать", "Твоя детская непосредственность",
-            "Твоя женственность", "Твой уют", "Твои холодные ручки, которые я грею", "Твоя забота о своем будущем", "Твои мечты",
-            "Как ты заставляешь меня меняться к лучшему", "Твой характер", "Твоя глубина", "Твоя загадочность", "Твоя простота",
-            "Твое умение находить выход из любой ситуации", "Твоя любовь к порядку", "Как ты выглядишь, когда читаешь", "Твоя сосредоточенность", "Твоя искренняя радость за меня",
-            "Твоя поддержка в моих начинаниях", "Твоя независимость", "Твоя внутренняя сила", "Твое умение сопереживать", "Твоя прелестная улыбка после сна",
-            "Твои глубокие мысли", "Твое отношение к семье", "Твое умение создать атмосферу", "Твоя стойкость", "Твой милый голос в трубке",
-            "Твое умение признавать ошибки", "Твоя оригинальность", "Твоя ответственность", "Твое умение ценить моменты", "Твой внутренний свет",
-            "Твое присутствие в моей жизни", "Твои планы на наше будущее", "То, как ты меня любишь", "То, что ты — моя судьба", "Просто за то, что ты есть"
-        ];
+<script>
+// PARTICLES
+(function(){
+  const c = document.getElementById('particles');
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');
+    p.className='p';
+    p.style.left = Math.random()*100+'%';
+    p.style.width = p.style.height = (Math.random()*3+1)+'px';
+    p.style.animationDuration = (Math.random()*12+8)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    p.style.opacity = Math.random()*0.5;
+    c.appendChild(p);
+  }
+})();
 
-        const list = document.getElementById('r-list');
-        reasons.forEach((text, i) => {
-            const item = document.createElement('div');
-            item.className = 'reason-item';
-            item.innerHTML = `<span>${i + 1}</span> ${text}`;
-            list.appendChild(item);
-        });
-    </script>
+// REASONS DATA
+const reasons = [
+  "Твоя улыбка","Твои глаза","Твой смех","Твоя бесконечная забота","Твой голос",
+  "Твоя поддержка в трудные минуты","Твоя искренность","Твоя безграничная доброта","Твой острый ум","Твоё ангельское терпение",
+  "Твой уникальный взгляд на мир","Твоя нежность","Твоя сумасшедшая энергия","Твоё душевное тепло","Твоя вера в меня",
+  "То, как ты пьёшь чай","Твои сообщения по утрам","Твоя целеустремлённость в учёбе","Твой неповторимый стиль","Как ты поправляешь волосы",
+  "Твоя честность","Твои сладкие поцелуи","Твой особенный аромат","Как ты радуешься мелочам","Твоя уникальность",
+  "Твои мудрые советы","Твоя преданность","Как ты произносишь моё имя","Твоё умение слушать","Твоя природная грация",
+  "Твои самые крепкие объятия","Твоя щедрость души","Твой вечный оптимизм","Твоя мудрость не по годам","Твоя железная сила воли",
+  "Твоё доверие","Твои интересные рассказы","Твоя естественная красота","Твоя дисциплина","Твоя чуткость к моим чувствам",
+  "Твой вкус в музыке","Твоя открытость всему новому","Твоя яркость","Твоя мягкость","То, что ты всегда рядом",
+  "Твоё чувство юмора","Твоё спокойствие","Твоя страсть к жизни","Твоё внимание к деталям","Твоя скромность",
+  "Твоя смелость","Твоя любовь к знаниям","Как ты сидишь в библиотеке","Твоя серьёзность","Твои сонные глаза",
+  "Твоё умение вдохновлять","Твоя организованность","Твоё доброе сердце","Твоя харизма","Твоя аккуратность",
+  "Твоё умение удивлять","Твоё понимание без слов","Твоя верность принципам","Твоё умение прощать","Твоя детская непосредственность",
+  "Твоя женственность","Твой уют","Твои холодные ручки, которые я грею","Твоя забота о своём будущем","Твои мечты",
+  "Как ты заставляешь меня меняться к лучшему","Твой характер","Твоя глубина","Твоя загадочность","Твоя простота",
+  "Твоё умение находить выход из любой ситуации","Твоя любовь к порядку","Как ты выглядишь, когда читаешь","Твоя сосредоточенность","Твоя искренняя радость за меня",
+  "Твоя поддержка в моих начинаниях","Твоя независимость","Твоя внутренняя сила","Твоё умение сопереживать","Твоя прелестная улыбка после сна",
+  "Твои глубокие мысли","Твоё отношение к семье","Твоё умение создать атмосферу","Твоя стойкость","Твой милый голос в трубке",
+  "Твоё умение признавать ошибки","Твоя оригинальность","Твоя ответственность","Твоё умение ценить моменты","Твой внутренний свет",
+  "Твоё присутствие в моей жизни","Твои планы на наше будущее","То, как ты меня любишь","То, что ты — моя судьба","Просто за то, что ты есть"
+];
+
+// BUILD REASONS
+const list = document.getElementById('r-list');
+reasons.forEach((txt,i)=>{
+  const d = document.createElement('div');
+  d.className = 'reason';
+  d.style.animationDelay = (i*0.03)+'s';
+  d.innerHTML = `<span class="r-num">${String(i+1).padStart(2,'0')}</span><span class="r-text">${txt}</span>`;
+  list.appendChild(d);
+});
+
+// NAVIGATION
+const sectionMap = { home:'s-home', gallery:'s-gallery', letter:'s-letter', reasons:'s-reasons' };
+function go(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(sectionMap[id]).classList.add('active');
+  document.getElementById('n-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// MUSIC
+let playing = false;
+const player = document.getElementById('player');
+const waves = document.getElementById('waves');
+
+function toggleMusic(){
+  if(playing){ player.pause(); waves.classList.add('paused'); playing=false; }
+  else { player.play().catch(()=>{}); waves.classList.remove('paused'); playing=true; }
+}
+
+// INIT
+function init(){
+  player.play().then(()=>{ playing=true; waves.classList.remove('paused'); }).catch(()=>{ waves.classList.add('paused'); });
+  document.getElementById('welcome').classList.add('hide');
+  setTimeout(()=>{
+    document.getElementById('welcome').style.display='none';
+    document.getElementById('app').classList.add('show');
+    document.body.style.overflow='auto';
+  },1200);
+}
+</script>
 </body>
 </html>
